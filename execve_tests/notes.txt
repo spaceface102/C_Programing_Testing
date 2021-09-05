@@ -1,0 +1,5 @@
+-I think there might be a way to get away
+with not replacing the current process
+with the called process by using fork.
+Look into this in the future, but I don't
+have a full idea on this yet.
