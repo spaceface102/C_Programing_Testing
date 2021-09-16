@@ -35,7 +35,7 @@ public:
         this->justANumber = temp_that.justANumber;
     }
 
-    Test& operator = (const Test& that) 
+    Test& operator=(const Test& that) 
     {
         this->justANumber = that.justANumber;
         std::cout 
@@ -46,7 +46,7 @@ public:
         return *this;
     }
 
-    Test& operator = (Test&& temp_that)
+    Test& operator=(Test&& temp_that)
     {
         this->justANumber = temp_that.justANumber;
         std::cout 
@@ -57,13 +57,51 @@ public:
         return *this;
     }
 
-    int getObjNumber(void) {return objNumber;}
-    int getJustANumber(void) {return justANumber;}
+    Test aSelfReturn(void)
+    {
+        return *this;
+    }
+
+    void doSomething0(const Test& that)
+        {*this = internalMethod0(that);}
+
+    Test doSomething0_1(const Test& that)
+    {
+        *this = internalMethod0(that);
+        return *this;
+    }
+
+    void doSomething1(const Test& that)
+        {*this = internalMethod1(that);}
+
+    Test doSomething1_1(const Test& that)
+    {
+        *this = internalMethod1(that);
+        return *this;
+    }
+
+    int getObjNumber(void)
+        {return objNumber;}
+
+    int getJustANumber(void)
+        {return justANumber;}
 
 private:
     int justANumber;
     const int objNumber;
     static int numberOf_ConstructedObjects;
+
+    Test internalMethod0(const Test& that)
+    {
+        Test output;
+        return output;
+    }
+    Test internalMethod1(const Test& that)
+    {
+        Test output;
+        output.justANumber = 9999;
+        return output;
+    }
 
 };
 int Test::numberOf_ConstructedObjects = 'a' - 1;
@@ -76,15 +114,17 @@ Test makeTest(int number) {const int temp = number; return Test{temp};}
 int main(void)
 {
     Test a;
-    Test b{23333};
-    Test c = makeTest(4);
+    Test b(42);
 
-    std::cout << "\n";
-    Test d{Test(3444)};
-    Test e{std::move(Test(444))};
-    Test f = std::move(makeTest(0xEABEEF));
-    std::cout << "\n";
-
-    a = makeTest(44);
-    a = std::move(makeTest(44));
+    //a.aSelfReturn();
+    //a.doSomething0(a);
+    Test c;
+    c = a.doSomething0_1(a);
+    //a.doSomething1(a);
+    //a.doSomething1_1(a);
+//
+    //a.doSomething0(b);
+    //a.doSomething0_1(b);
+    //a.doSomething1(b);
+    //a.doSomething1_1(b);
 }
