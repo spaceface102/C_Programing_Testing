@@ -57,6 +57,11 @@ public:
         return *this;
     }
 
+    ~Test(void)
+    {
+        std::cout << "Killing Obj#" << (char)objNumber << "\n";
+    }
+
     Test aSelfReturn(void)
     {
         return *this;
@@ -109,22 +114,57 @@ int Test::numberOf_ConstructedObjects = 'a' - 1;
 void func0(Test x) {}
 void func1(Test& x) {}
 void func2(const Test& x) {}
+void func3(Test&& x) {std::cout << "Inside func3\n";}
+//Test&& func4(void) {std::cout << "Inside func4\n"; return Test{};} BAD!
+Test&& func5(void) {static Test x{42}; std::cout << "Inside func5\n"; return std::move(x);}
 Test makeTest(int number) {const int temp = number; return Test{temp};}
 
 int main(void)
 {
-    Test a;
-    Test b(42);
+    //Test a;
+    //Test b(42);
 
     //a.aSelfReturn();
     //a.doSomething0(a);
-    Test c;
-    c = a.doSomething0_1(a);
+    //Test c;
+    //c = a.doSomething0_1(a);
     //a.doSomething1(a);
     //a.doSomething1_1(a);
-//
+
     //a.doSomething0(b);
     //a.doSomething0_1(b);
     //a.doSomething1(b);
     //a.doSomething1_1(b);
+
+    //Test a;
+    //Test& b = a;
+    //Test&& c = std::move(b);
+    //Test&& d = std::move(a);
+    
+    //Test&& a = Test{1};
+    //a.aSelfReturn();
+
+    //Test a;
+    //Test&& b = Test{};
+    //a = b;
+
+    //Test a;
+    //Test&& b = std::move(a);
+    //a = b;
+
+    //Test a;
+    //func3(Test{});
+    //func3(std::move(a));
+
+    //func4();
+    //std::cout << "Hello!\n";
+
+    //Test a;
+    //Test b;
+    //a = func5();
+    //b = func5();
+
+    //Test a = makeTest(43);
+    //std::cout << "spacer\n";
+    //Test b = func5();
 }
